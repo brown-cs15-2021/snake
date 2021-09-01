@@ -11,15 +11,27 @@ import javafx.util.Duration;
 public class Game {
 
     private Snake snake;
-    private Board board;
+    private PicnicTile[][] board;
     private Pane gamePane;
     private ScoreController scoreController;
+    private boolean gameOver;
 
     public Game(Pane gamePane, ScoreController scoreController) {
         this.gamePane = gamePane;
-        this.board = new Board(gamePane);
-        this.snake = new Snake(board, gamePane);
+        this.board = new PicnicTile[Constants.NUM_ROWS][Constants.NUM_COLS];
+        for (int row = 0; row < Constants.NUM_ROWS; row++) {
+            for (int col = 0; col < Constants.NUM_COLS; col++) {
+                if ((row + col) % 2 == 0) {
+                    this.board[row][col] = new PicnicTile(gamePane, Color.GREENYELLOW, row, col);
+                } else {
+                    this.board[row][col] = new PicnicTile(gamePane, Color.GREEN, row, col);
+                }
+            }
+        }
+
+        this.snake = new Snake(this.board, gamePane);
         this.scoreController = scoreController;
+        this.gameOver = false;
 
         gamePane.setOnKeyPressed(e -> this.handleKeyPress(e));
         gamePane.setFocusTraversable(true);
@@ -33,54 +45,74 @@ public class Game {
         timeline.play();
     }
 
-
     private void spawnFood() {
-        PicnicTile tile = board.randomOpenTile();
-        Food food;
+        int row;
+        int col;
+        do {
+            row = (int) (Math.random() * Constants.NUM_ROWS);
+            col = (int) (Math.random() * Constants.NUM_COLS);
+        } while (!this.board[row][col].getContents().equals(TileContents.EMPTY));
+
+        PicnicTile tile = this.board[row][col];
+        Color foodColor;
+        int foodScore;
         switch ((int) (Math.random() * 10)) {
             case 0:
             case 1:
-                food = new Food(gamePane, Color.GOLDENROD, 50, tile.getRow(), tile.getCol());
+                foodColor = Color.GOLDENROD;
+                foodScore = 50;
                 break;
             case 2:
-                food = new Food(gamePane, Color.MINTCREAM, 100, tile.getRow(), tile.getCol());
+                foodColor = Color.MINTCREAM;
+                foodScore = 100;
                 break;
             case 3:
             case 4:
             case 5:
-                food = new Food(gamePane, Color.BLACK, 25, tile.getRow(), tile.getCol());
+                foodColor = Color.BLACK;
+                foodScore = 25;
                 break;
             default:
-                food = new Food(gamePane, Color.RED, 10, tile.getRow(), tile.getCol());
+                foodColor = Color.RED;
+                foodScore = 10;
                 break;
         }
 
-        tile.addFood(food);
+        tile.addFood(new Food(this.gamePane, foodColor, foodScore,
+                tile.getRow() * Constants.SQ_WIDTH, tile.getCol() * Constants.SQ_WIDTH));
     }
 
     private void handleKeyPress(KeyEvent event) {
+        Direction newDirection = null;
         switch (event.getCode()) {
             case UP:
-                snake.changeDirection(Direction.UP);
+                newDirection = Direction.UP;
                 break;
             case DOWN:
-                snake.changeDirection(Direction.DOWN);
+                newDirection = Direction.DOWN;
                 break;
             case LEFT:
-                snake.changeDirection(Direction.LEFT);
+                newDirection = Direction.LEFT;
                 break;
             case RIGHT:
-                snake.changeDirection(Direction.RIGHT);
+                newDirection = Direction.RIGHT;
                 break;
             default:
                 break;
+        }
+        if (newDirection != null && !this.gameOver) {
+            this.snake.changeDirection(newDirection);
         }
     }
 
     private void update() {
-        PicnicTile tile = snake.move();
+        if (this.gameOver) {
+            return;
+        }
+
+        PicnicTile tile = this.snake.move();
         if (tile == null) {
-            //game over
+            this.gameOver = true;
             return;
         }
 

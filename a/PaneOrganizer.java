@@ -8,16 +8,38 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+/**
+ * Organizes the JavaFX graphical structure of the program. It
+ * creates the root BorderPane with the gamePane in the center and a bottomPane
+ * with Quit button and score label.
+ */
 public class PaneOrganizer {
 
-    private BorderPane _root;
+    private BorderPane root;
 
+    /**
+     * Constructs the PaneOrganizer and does the graphical setup.
+     */
     public PaneOrganizer() {
-        _root = new BorderPane();
+        this.root = new BorderPane();
 
         Pane gamePane = new Pane();
-        _root.setCenter(gamePane);
+        this.root.setCenter(gamePane);
 
+        Pane bottomPane = this.createBottomPane();
+        Label score = new Label(Constants.SCORE_LABEL_TEXT + 0);
+        bottomPane.getChildren().add(score);
+        this.root.setBottom(bottomPane);
+
+        new Game(gamePane, score);
+    }
+
+    /**
+     * Creates and styles the bottom pane as an HBox with a quit button.
+     *
+     * @return bottom pane
+     */
+    private HBox createBottomPane() {
         HBox lowerPane = new HBox();
         lowerPane.setAlignment(Pos.CENTER);
         lowerPane.setSpacing(Constants.SCORE_PANE_SPACING);
@@ -27,15 +49,17 @@ public class PaneOrganizer {
         quit.setOnAction(ActionEvent -> {
             Platform.exit(); });
 
-        Label score = new Label(Constants.SCORE_LABEL_TEXT + 0);
-        lowerPane.getChildren().addAll(quit, score);
-        _root.setBottom(lowerPane);
-
-        new Game(gamePane, score);
+        lowerPane.getChildren().add(quit);
+        return lowerPane;
     }
 
 
+    /**
+     * Gets the root of the program.
+     *
+     * @return program's root BorderPane
+     */
     public BorderPane getRoot() {
-        return _root;
+        return this.root;
     }
 }

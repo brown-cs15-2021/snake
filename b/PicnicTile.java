@@ -6,60 +6,56 @@ import javafx.scene.shape.Rectangle;
 
 public class PicnicTile {
 
-    private Rectangle _rect;
-    private TileContents _contents;
-    private Food _food;
-    private Color _originalColor;
-    private int _row;
-    private int _col;
+    private Rectangle rect;
+    private TileContents contents;
+    private Food food;
+    private Color originalColor;
+    private int row;
+    private int col;
 
-    public PicnicTile(Pane gamePane, boolean odd, int row, int col) {
-        _row = row;
-        _col = col;
-        _rect = new Rectangle(col * Constants.SQ_WIDTH, row * Constants.SQ_WIDTH, Constants.SQ_WIDTH, Constants.SQ_WIDTH);
-        if (odd) {
-            _originalColor = Color.GREEN;
-        } else {
-            _originalColor = Color.GREENYELLOW;
-        }
+    public PicnicTile(Pane gamePane, Color color, int row, int col) {
+        this.row = row;
+        this.col = col;
+        this.rect = new Rectangle(col * Constants.SQ_WIDTH, row * Constants.SQ_WIDTH, Constants.SQ_WIDTH, Constants.SQ_WIDTH);
+        this.originalColor = color;
         this.reset();
-        gamePane.getChildren().add(_rect);
+        gamePane.getChildren().add(this.rect);
     }
 
     public void reset() {
-        _contents = TileContents.EMPTY;
-        _rect.setFill(_originalColor);
-        if (_food != null) {
-            _food.eat();
+        this.contents = TileContents.EMPTY;
+        this.rect.setFill(this.originalColor);
+        if (this.food != null) {
+            this.food.eat();
         }
-        _food = null;
+        this.food = null;
     }
 
     public void addSnake() {
-        _contents = TileContents.SNAKE;
+        this.contents = TileContents.SNAKE;
     }
 
     public void addFood(Food food) {
-        _food = food;
-        _contents = TileContents.FOOD;
+        this.food = food;
+        this.contents = TileContents.FOOD;
     }
 
     public int eatFood() {
-        int score = _food.eat();
-        _food = null;
-        _contents = TileContents.EMPTY;
+        int score = this.food.eat();
+        this.food = null;
+        this.contents = TileContents.EMPTY;
         return score;
     }
 
     public TileContents getContents() {
-        return _contents;
+        return this.contents;
     }
 
     public int getRow() {
-        return _row;
+        return this.row;
     }
 
     public int getCol() {
-        return _col;
+        return this.col;
     }
 }

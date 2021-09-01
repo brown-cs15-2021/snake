@@ -23,6 +23,6 @@ public class ScoreController {
 
     public void addToScore(int points) {
         this.score += points;
-        this.scoreLabel.setText(Constants.SCORE_LABEL_TEXT + 0);
+        this.scoreLabel.setText(Constants.SCORE_LABEL_TEXT + this.score);
     }
 }

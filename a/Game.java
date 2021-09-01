@@ -11,51 +11,69 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+/**
+ * Handles the high-level logic of the program, by running a timeline that updates
+ * the snake and board state at each tick of the timeline and by updating the
+ * snake direction of key input.
+ */
 public class Game {
 
-    private Snake _snake;
-    private Board _board;
-    private int _score;
-    private Label _scoreLabel;
-    private Timeline _timeline;
-    private Pane _gamePane;
+    private Snake snake;
+    private Board board;
+    private int score;
+    private Label scoreLabel;
+    private Timeline timeline;
+    private Pane gamePane;
 
+    /**
+     * Sets up the game by registering the KeyEvent handler on the gamePane and starting
+     * the timeline that triggers the game update.
+     *
+     * @param gamePane the pane on which to add game elements
+     * @param scoreLabel a label that tracks score
+     */
     public Game(Pane gamePane, Label scoreLabel) {
-        _gamePane = gamePane;
-        _board = new Board(gamePane);
-        _snake = new Snake(_board);
-        _scoreLabel = scoreLabel;
+        this.gamePane = gamePane;
+        this.board = new Board(this.gamePane);
+        this.snake = new Snake(this.board);
+        this.scoreLabel = scoreLabel;
+        this.score = 0;
 
-        _score = 0;
-        gamePane.setOnKeyPressed((KeyEvent event) -> this.handleKeyInput(event.getCode()));
-        gamePane.setFocusTraversable(true);
         for (int i = 0; i < Constants.NUM_FRUIT; i++) {
             this.spawnFood();
         }
-        KeyFrame kf = new KeyFrame(Duration.seconds(Constants.TIMELINE_DURATION), (ActionEvent event) -> this.update());
-        _timeline = new Timeline(kf);
-        _timeline.setCycleCount(Animation.INDEFINITE);
-        _timeline.play();
+
+        this.gamePane.setOnKeyPressed((KeyEvent event) -> this.handleKeyInput(event.getCode()));
+        this.gamePane.setFocusTraversable(true);
+
+        KeyFrame kf = new KeyFrame(Duration.seconds(Constants.TIMELINE_DURATION),
+                (ActionEvent event) -> this.update());
+        this.timeline = new Timeline(kf);
+        this.timeline.setCycleCount(Animation.INDEFINITE);
+        this.timeline.play();
     }
 
+    /**
+     * Spawns a random new food item on a random tile that is empty.
+     */
     private void spawnFood() {
-        PicnicTile tile = _board.getRandomOpenTile();
+        BoardSquare tile = this.board.getRandomEmptyTile();
         Food food;
         switch ((int) (Math.random() * 10)) {
             case 0:
             case 1:
-                food = new Food(_gamePane, Color.GOLDENROD, 50, tile.getRow(), tile.getCol());
+                food = new Food(this.gamePane, Color.GOLDENROD, Constants.FOOD_3_SCORE, tile.getRow(), tile.getCol());
                 break;
             case 2:
-                food = new Food(_gamePane, Color.MINTCREAM, 100, tile.getRow(), tile.getCol());
+                food = new Food(this.gamePane, Color.MINTCREAM, Constants.FOOD_4_SCORE, tile.getRow(), tile.getCol());
                 break;
             case 3:
             case 4:
             case 5:
-                food = new Food(_gamePane, Color.BLACK, 25, tile.getRow(), tile.getCol());
+                food = new Food(gamePane, Color.BLACK, Constants.FOOD_2_SCORE, tile.getRow(), tile.getCol());
                 break;
             default:
-                food = new Food(_gamePane, Color.RED, 10, tile.getRow(), tile.getCol());
+                food = new Food(gamePane, Color.RED, Constants.FOOD_1_SCORE, tile.getRow(), tile.getCol());
                 break;
         }
 
@@ -63,36 +81,44 @@ public class Game {
     }
 
 
+    /**
+     * Updates the state of the game, by moving the snake, updating the score,
+     * and spawning new food when necessary.
+     */
     private void update() {
-        PicnicTile tile = _snake.move();
-        if (tile == null) {
-            //game over
+        SnakeMoveResult result = this.snake.move();
+
+        if (result.equals(SnakeMoveResult.GAME_OVER)) {
+            this.timeline.stop();
             return;
         }
 
-        if (tile.getContents().equals(TileContents.FOOD)) {
-            _score += tile.eatFood();
+        if (result.getScoreIncrease() > 0) {
+            this.score += result.getScoreIncrease();
+            this.scoreLabel.setText(Constants.SCORE_LABEL_TEXT + this.score);
             this.spawnFood();
         }
-
-        tile.addSnake();
-
-        _scoreLabel.setText(Constants.SCORE_LABEL_TEXT + _score);
     }
 
+    /**
+     * Handles key input by changing direction of snake on up, down, left, and
+     * right arrow keys.
+     *
+     * @param code code of the key pressed
+     */
     private void handleKeyInput(KeyCode code) {
         switch (code) {
             case UP:
-                _snake.changeDirection(Direction.UP);
+                this.snake.changeDirection(Direction.UP);
                 break;
             case DOWN:
-                _snake.changeDirection(Direction.DOWN);
+                this.snake.changeDirection(Direction.DOWN);
                 break;
             case LEFT:
-                _snake.changeDirection(Direction.LEFT);
+                this.snake.changeDirection(Direction.LEFT);
                 break;
             case RIGHT:
-                _snake.changeDirection(Direction.RIGHT);
+                this.snake.changeDirection(Direction.RIGHT);
                 break;
             default:
                 break;
