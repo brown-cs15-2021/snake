@@ -1,4 +1,4 @@
-package snake.b;
+package snake.StudentB;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;

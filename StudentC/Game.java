@@ -1,4 +1,4 @@
-package snake.c;
+package snake.StudentC;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -201,14 +201,16 @@ public class Game {
                 break;
         }
 
-        if (newCol >= Constants.NUM_COLS || newCol < 0 || newRow >= Constants.NUM_ROWS || newRow < 0 || this.board[newRow][newCol].getFill().equals(Color.BLACK)) {
+        if (newCol >= Constants.NUM_COLS || newCol < 0 || newRow >= Constants.NUM_ROWS || newRow < 0
+                || this.board[newRow][newCol].getFill().equals(Color.BLACK)) {
             this.gameOver = true;
             return;
         }
 
         boolean ateFood = false;
         for (Circle myFood : this.food) {
-            if ((int) myFood.getCenterY() / Constants.SQ_WIDTH == newRow && (int) myFood.getCenterX() / Constants.SQ_WIDTH == newCol) {
+            if ((int) myFood.getCenterY() / Constants.SQ_WIDTH == newRow
+                    && (int) myFood.getCenterX() / Constants.SQ_WIDTH == newCol) {
                 if (myFood.getFill().equals(Color.GOLDENROD)) {
                     this.score += 50;
                 } else if (myFood.getFill().equals(Color.MINTCREAM)) {

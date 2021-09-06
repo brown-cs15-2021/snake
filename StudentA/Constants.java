@@ -1,4 +1,4 @@
-package snake.a;
+package snake.StudentA;
 
 import javafx.scene.paint.Color;
 

@@ -1,4 +1,4 @@
-package snake.a;
+package snake.StudentA;
 
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -46,9 +46,7 @@ public class PaneOrganizer {
         lowerPane.setPrefHeight(Constants.SCORE_PANE_HEIGHT);
         Button quit = new Button("Quit");
         quit.setFocusTraversable(false);
-        quit.setOnAction(ActionEvent -> {
-            Platform.exit(); });
-
+        quit.setOnAction(ActionEvent -> { Platform.exit(); } );
         lowerPane.getChildren().add(quit);
         return lowerPane;
     }

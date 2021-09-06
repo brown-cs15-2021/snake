@@ -1,4 +1,4 @@
-package snake.b;
+package snake.StudentB;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -26,33 +26,33 @@ public class Snake {
     }
 
     public void restart() {
-        snakeTiles.clear();
-        snakeBody.clear();
-        directionMoving = Direction.RIGHT;
-        nextDirection = Direction.RIGHT;
+        this.snakeTiles.clear();
+        this.snakeBody.clear();
+        this.directionMoving = Direction.RIGHT;
+        this.nextDirection = Direction.RIGHT;
         this.row = Constants.SNAKE_INITIAL_COORDINATES[0][0];
         this.col = Constants.SNAKE_INITIAL_COORDINATES[0][1];
         for (int[] coord : Constants.SNAKE_INITIAL_COORDINATES) {
             PicnicTile tile = this.board[coord[0]][coord[1]];
             Rectangle square = this.makeSnakeSquare(coord[0], coord[1]);
-            snakeBody.add(square);
+            this.snakeBody.add(square);
             tile.addSnake();
-            snakeTiles.add(tile);
+            this.snakeTiles.add(tile);
         }
     }
 
     public void changeDirection(Direction dir) {
-        if (!dir.equals(directionMoving.opposite())) {
-            nextDirection = dir;
+        if (!dir.equals(this.directionMoving.opposite())) {
+            this.nextDirection = dir;
         }
     }
 
     public PicnicTile move() {
-        directionMoving = nextDirection;
-        row = directionMoving.newRow(row);
-        col = directionMoving.newCol(col);
+        this.directionMoving = this.nextDirection;
+        this.row = this.directionMoving.newRow(this.row);
+        this.col = this.directionMoving.newCol(this.col);
 
-        PicnicTile tile = this.board[row][col];
+        PicnicTile tile = this.board[this.row][this.col];
         if (tile == null) {
             return null;
         } else {
@@ -60,14 +60,14 @@ public class Snake {
                 case SNAKE:
                     return null;
                 case EMPTY:
-                    snakeTiles.getLast().reset();
-                    PicnicTile backTile = snakeTiles.removeLast();
+                    this.snakeTiles.getLast().reset();
+                    PicnicTile backTile = this.snakeTiles.removeLast();
                     backTile.reset();
-                    Rectangle rect = snakeBody.removeLast();
-                    gamePane.getChildren().remove(rect);
+                    Rectangle rect = this.snakeBody.removeLast();
+                    this.gamePane.getChildren().remove(rect);
                 default:
-                    snakeTiles.addFirst(tile);
-                    snakeBody.addFirst(this.makeSnakeSquare(row, col));
+                    this.snakeTiles.addFirst(tile);
+                    this.snakeBody.addFirst(this.makeSnakeSquare(this.row, this.col));
             }
         }
         return tile;
@@ -77,7 +77,7 @@ public class Snake {
         Rectangle square = new Rectangle(col * Constants.SQ_WIDTH, row * Constants.SQ_WIDTH,
                 Constants.SQ_WIDTH, Constants.SQ_WIDTH);
         square.setFill(Color.BLACK);
-        gamePane.getChildren().add(square);
+        this.gamePane.getChildren().add(square);
         return square;
     }
 }

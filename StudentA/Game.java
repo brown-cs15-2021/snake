@@ -1,4 +1,4 @@
-package snake.a;
+package snake.StudentA;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -70,10 +70,10 @@ public class Game {
             case 3:
             case 4:
             case 5:
-                food = new Food(gamePane, Color.BLACK, Constants.FOOD_2_SCORE, tile.getRow(), tile.getCol());
+                food = new Food(this.gamePane, Color.BLACK, Constants.FOOD_2_SCORE, tile.getRow(), tile.getCol());
                 break;
             default:
-                food = new Food(gamePane, Color.RED, Constants.FOOD_1_SCORE, tile.getRow(), tile.getCol());
+                food = new Food(this.gamePane, Color.RED, Constants.FOOD_1_SCORE, tile.getRow(), tile.getCol());
                 break;
         }
 
@@ -90,7 +90,6 @@ public class Game {
 
         if (result.equals(SnakeMoveResult.GAME_OVER)) {
             this.timeline.stop();
-            return;
         }
 
         if (result.getScoreIncrease() > 0) {

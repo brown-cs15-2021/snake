@@ -1,4 +1,4 @@
-package snake.b;
+package snake.StudentB;
 
 /**
  * Stores constants used throughout the program.

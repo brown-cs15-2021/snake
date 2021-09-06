@@ -1,4 +1,4 @@
-package snake.a;
+package snake.StudentA;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -24,11 +24,11 @@ public class Food {
      */
     public Food(Pane gamePane, Color color, int score, int row, int col) {
         this.gamePane = gamePane;
-        circle = new Circle(col * Constants.SQ_WIDTH + Constants.FRUIT_OFFSET,
+        this.circle = new Circle(col * Constants.SQ_WIDTH + Constants.FRUIT_OFFSET,
                 row * Constants.SQ_WIDTH + Constants.FRUIT_OFFSET,
                 Constants.FRUIT_RADIUS, color);
         this.score = score;
-        this.gamePane.getChildren().add(circle);
+        this.gamePane.getChildren().add(this.circle);
     }
 
     /**
@@ -37,7 +37,7 @@ public class Food {
      * @return score of food eaten
      */
     public int eat() {
-        gamePane.getChildren().remove(circle);
-        return score;
+        this.gamePane.getChildren().remove(this.circle);
+        return this.score;
     }
 }

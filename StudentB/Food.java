@@ -1,4 +1,4 @@
-package snake.b;
+package snake.StudentB;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -20,6 +20,6 @@ public class Food {
 
     public int eat() {
         this.gamePane.getChildren().remove(this.circle);
-        return score;
+        return this.score;
     }
 }

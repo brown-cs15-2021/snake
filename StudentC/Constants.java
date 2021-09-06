@@ -1,4 +1,4 @@
-package snake.c;
+package snake.StudentC;
 
 /**
  * Stores constants used throughout the program.
@@ -16,7 +16,6 @@ public class Constants {
 
     public static final int FRUIT_RADIUS = 12;
     public static final int FRUIT_OFFSET = SQ_WIDTH / 2;
-    public static final int NUM_FRUIT = 3;
 
     public static final double TIMELINE_DURATION = 0.4;
 

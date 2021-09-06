@@ -1,4 +1,4 @@
-package snake.b;
+package snake.StudentB;
 
 public enum Direction {
 

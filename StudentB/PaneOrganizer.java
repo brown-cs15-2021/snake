@@ -1,4 +1,4 @@
-package snake.b;
+package snake.StudentB;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
@@ -10,22 +10,22 @@ public class PaneOrganizer {
     private BorderPane root;
 
     public PaneOrganizer() {
-        root = new BorderPane();
+        this.root = new BorderPane();
 
         Pane gamePane = new Pane();
-        root.setCenter(gamePane);
+        this.root.setCenter(gamePane);
 
         HBox lowerPane = new HBox();
         lowerPane.setAlignment(Pos.CENTER);
         lowerPane.setSpacing(Constants.SCORE_PANE_SPACING);
         lowerPane.setPrefHeight(Constants.SCORE_PANE_HEIGHT);
-        root.setBottom(lowerPane);
+        this.root.setBottom(lowerPane);
 
         new Game(gamePane, new ScoreController(lowerPane));
     }
 
 
     public BorderPane getRoot() {
-        return root;
+        return this.root;
     }
 }

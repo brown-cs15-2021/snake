@@ -1,4 +1,4 @@
-package snake.c;
+package snake.StudentB;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -19,8 +19,8 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
-        Game game = new Game();
-        Scene scene = new Scene(game.getRoot(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+        PaneOrganizer po = new PaneOrganizer();
+        Scene scene = new Scene(po.getRoot(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Snake");
         primaryStage.setResizable(false);

@@ -1,4 +1,4 @@
-package snake.b;
+package snake.StudentB;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
