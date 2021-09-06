@@ -3,8 +3,13 @@ package snake.StudentB;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
@@ -107,6 +112,22 @@ public class Game {
 
     private void update() {
         if (this.gameOver) {
+            Label label = new Label("Game Over!");
+            VBox labelBox = new VBox(label);
+            labelBox.setAlignment(Pos.CENTER);
+            labelBox.setPrefHeight(this.gamePane.getHeight());
+            labelBox.setPrefWidth(this.gamePane.getWidth());
+            label.setStyle("-fx-font: italic bold 75px arial, serif;-fx-text-alignment: center;-fx-text-fill: white;");
+
+            Color[] colors = new Color[]{Color.web("#E00009"), Color.web("#E47C00"), Color.web("#ECEF02"), Color.web("#65F400"), Color.web("#51B5FF")};
+            DropShadow shadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#E02EF3"), 0, 10, 2, 2);
+            for (Color color : colors) {
+                DropShadow temp = new DropShadow(BlurType.GAUSSIAN, color, 0, 10, 2, 2);
+                temp.setInput(shadow);
+                shadow = temp;
+            }
+            label.setEffect(shadow);
+            this.gamePane.getChildren().add(labelBox);
             return;
         }
 
