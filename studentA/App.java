@@ -1,4 +1,4 @@
-package snake.StudentA;
+package snake.studentA;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -15,15 +15,15 @@ public class App extends Application {
      * The start method is called after the init method has returned,
      * and after the system is ready for the application to begin running.
      *
-     * @param primaryStage the primary stage for this application
+     * @param stage the primary stage for this application
      */
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage stage) {
         PaneOrganizer po = new PaneOrganizer();
         Scene scene = new Scene(po.getRoot(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Snake!");
-        primaryStage.setResizable(false);
-        primaryStage.show();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("Snake!");
+        stage.show();
     }
 }

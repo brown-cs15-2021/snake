@@ -1,4 +1,4 @@
-package snake.StudentA;
+package snake.studentA;
 
 import java.util.ArrayList;
 

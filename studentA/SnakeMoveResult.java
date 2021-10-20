@@ -1,4 +1,4 @@
-package snake.StudentA;
+package snake.studentA;
 
 /**
  * Represents the result of the snake moving one square, with values GAME_OVER

@@ -1,4 +1,4 @@
-package snake.StudentA;
+package snake.studentA;
 
 /**
  * Enum to represent direction of movement, with values UP, DOWN, LEFT, and

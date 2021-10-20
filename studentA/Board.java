@@ -1,6 +1,7 @@
-package snake.StudentA;
+package snake.studentA;
 
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 /**
  * Represents the game board of squares.
@@ -8,6 +9,7 @@ import javafx.scene.layout.Pane;
 public class Board {
 
     private BoardSquare[][] tiles;
+    private Pane gamePane;
 
     /**
      * Constructs the board logically and graphically.
@@ -15,15 +17,20 @@ public class Board {
      * @param gamePane the pane on which to add the board
      */
     public Board(Pane gamePane) {
+        this.gamePane = gamePane;
         this.tiles = new BoardSquare[Constants.NUM_ROWS][Constants.NUM_COLS];
         for (int row = 0; row < Constants.NUM_ROWS; row++) {
             for (int col = 0; col < Constants.NUM_COLS; col++) {
                 if ((row + col) % 2 == 0) {
-                    this.tiles[row][col] = new BoardSquare(gamePane, false, row, col);
+                    this.tiles[row][col] = new BoardSquare(this.gamePane, false, row, col);
                 } else {
-                    this.tiles[row][col] = new BoardSquare(gamePane, true, row, col);
+                    this.tiles[row][col] = new BoardSquare(this.gamePane, true, row, col);
                 }
             }
+        }
+
+        for (int i = 0; i < Constants.NUM_FRUIT; i++) {
+            this.spawnFood();
         }
     }
 
@@ -42,11 +49,38 @@ public class Board {
     }
 
     /**
+     * Spawns a random new food item on a random tile that is empty.
+     */
+    public void spawnFood() {
+        BoardSquare tile = this.getRandomEmptyTile();
+        Food food;
+        switch ((int) (Math.random() * 10)) {
+            case 0:
+            case 1:
+                food = new Food(this.gamePane, Color.GOLDENROD, Constants.FOOD_3_SCORE, tile.getRow(), tile.getCol());
+                break;
+            case 2:
+                food = new Food(this.gamePane, Color.MINTCREAM, Constants.FOOD_4_SCORE, tile.getRow(), tile.getCol());
+                break;
+            case 3:
+            case 4:
+            case 5:
+                food = new Food(this.gamePane, Color.BLACK, Constants.FOOD_2_SCORE, tile.getRow(), tile.getCol());
+                break;
+            default:
+                food = new Food(this.gamePane, Color.RED, Constants.FOOD_1_SCORE, tile.getRow(), tile.getCol());
+                break;
+        }
+
+        tile.addFood(food);
+    }
+
+    /**
      * Gets a random tile that has no contents (no food or snake body)
      *
      * @return a random empty BoardSquare
      */
-    public BoardSquare getRandomEmptyTile() {
+    private BoardSquare getRandomEmptyTile() {
         int row;
         int col;
         // generate random coordinates until the coordinates yield an empty square

@@ -1,10 +1,12 @@
-package snake.StudentC;
+package snake.studentC;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlurType;
@@ -17,13 +19,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class Game {
+/**
+ * This App class runs my entire Snake game. It manages the graphical setup of my app, creates
+ * the timeline of the snake moving, keeps track of the score and updates the label, creates
+ * the board of squares, spawns food on the board, turns the snake on key input, and checks for
+ * game over when the snake runs into itself or off screen.
+ */
+public class App extends Application {
 
-    private BorderPane root;
     private Rectangle[][] board;
     private ArrayList<Circle> food;
     private Pane gamePane;
@@ -34,33 +42,41 @@ public class Game {
     private int currDirection;
     private int nextDirection;
 
-    public Game() {
-        this.root = new BorderPane();
+    /**
+     * The main entry point for all JavaFX applications.
+     * This method sets up the Graphical User Interface, creates the 2D array
+     * board graphically and logically, and sets up the event handlers for the
+     * timeline and key handler.
+     *
+     * @param stage the primary stage for this application
+     */
+    @Override
+    public void start(Stage stage) {
+        BorderPane root = new BorderPane();
 
         Pane gamePane = new Pane();
-        this.root.setCenter(gamePane);
+        root.setCenter(gamePane);
 
         HBox bottomPane = new HBox();
         bottomPane.setAlignment(Pos.CENTER);
-        bottomPane.setSpacing(Constants.SCORE_PANE_SPACING);
-        bottomPane.setPrefHeight(Constants.SCORE_PANE_HEIGHT);
+        bottomPane.setSpacing(20);
+        bottomPane.setPrefHeight(60);
         Button quit = new Button("Quit");
         quit.setFocusTraversable(false);
         quit.setOnAction(ActionEvent -> {
             Platform.exit(); });
 
         bottomPane.getChildren().add(quit);
-        this.scoreLabel = new Label(Constants.SCORE_LABEL_TEXT + 0);
+        this.scoreLabel = new Label("Score: " + 0);
         bottomPane.getChildren().add(this.scoreLabel);
-        this.root.setBottom(bottomPane);
+        root.setBottom(bottomPane);
 
         this.gamePane = gamePane;
         this.score = 0;
-        this.board = new Rectangle[Constants.NUM_ROWS][Constants.NUM_COLS];
-        for (int row = 0; row < Constants.NUM_ROWS; row++) {
-            for (int col = 0; col < Constants.NUM_COLS; col++) {
-                this.board[row][col] = new Rectangle(col * Constants.SQ_WIDTH, row * Constants.SQ_WIDTH,
-                        Constants.SQ_WIDTH, Constants.SQ_WIDTH);
+        this.board = new Rectangle[15][15];
+        for (int row = 0; row < 15; row++) {
+            for (int col = 0; col < 15; col++) {
+                this.board[row][col] = new Rectangle(col * 35, row * 35, 35, 35);
                 if ((row + col) % 2 == 0) {
                     this.board[row][col].setFill(Color.GREENYELLOW);
                 } else {
@@ -71,11 +87,8 @@ public class Game {
         }
 
         this.snake = new ArrayList<>();
-        /*
-        initialize the snake graphically and logically based on coordinate constant,
-        currently 3 squares in the left middle of the board
-         */
-        for (int[] coord : Constants.SNAKE_INITIAL_COORDINATES) {
+
+        for (int[] coord : new int[][]{{7,2}, {7,1}, {7,0}}) {
             Rectangle square = this.board[coord[0]][coord[1]];
             square.setFill(Color.BLACK);
             this.snake.add(square);
@@ -94,32 +107,33 @@ public class Game {
         this.currDirection = 0;
         this.nextDirection = 0;
 
-        KeyFrame kf = new KeyFrame(Duration.seconds(Constants.TIMELINE_DURATION), (e -> this.update()));
+        KeyFrame kf = new KeyFrame(Duration.seconds(0.4), (e -> this.update()));
         Timeline timeline = new Timeline(kf);
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
+
+        Scene scene = new Scene(root, 525, 585);
+        stage.setScene(scene);
+        stage.setTitle("Snake");
+        stage.setResizable(false);
+        stage.show();
     }
 
     /**
-     * Gets the root of the program.
-     *
-     * @return program's root BorderPane
+     * This method spawns one food on the board by finding a square on the board that's
+     * available, then randomly generating one of the food types.
      */
-    public BorderPane getRoot() {
-        return this.root;
-    }
-
     private void spawnFood() {
         int row;
         int col;
         boolean hasFood;
         do {
-            row = (int) (Math.random() * Constants.NUM_ROWS);
-            col = (int) (Math.random() * Constants.NUM_COLS);
+            row = (int) (Math.random() * 15);
+            col = (int) (Math.random() * 15);
             hasFood = false;
             for (Circle myFood : this.food) {
-                if ((int) myFood.getCenterY() / Constants.SQ_WIDTH == row &&
-                        (int) myFood.getCenterX() / Constants.SQ_WIDTH == col) {
+                if ((int) myFood.getCenterY() / 35 == row &&
+                        (int) myFood.getCenterX() / 35 == col) {
                     hasFood = true;
                     break;
                 }
@@ -145,12 +159,17 @@ public class Game {
                 break;
         }
 
-        Circle newFood = new Circle(col * Constants.SQ_WIDTH + Constants.FRUIT_OFFSET,
-                row * Constants.SQ_WIDTH + Constants.FRUIT_OFFSET, Constants.FRUIT_RADIUS, foodColor);
+        Circle newFood = new Circle(col * 35 + 17, row * 35 + 17, 12, foodColor);
         this.gamePane.getChildren().add(newFood);
         this.food.add(newFood);
     }
 
+    /**
+     * This method handles a key press by changing the direction of the snake movement,
+     * as long as it isn't changing by 180º.
+     *
+     * @param event the key event representing that key press
+     */
     private void handleKeyPress(KeyEvent event) {
         switch (event.getCode()) {
             case UP:
@@ -178,6 +197,11 @@ public class Game {
         }
     }
 
+    /**
+     * This method handles how the game updates at each increment of the timeline. If the game is
+     * over it creates and adds a Game Over label. Otherwise, it moves the snake, checks
+     * for game over, and updates the score and snake length if it has eaten food.
+     */
     private void update() {
         if (this.gameOver) {
             Label label = new Label("Game Over!");
@@ -200,8 +224,8 @@ public class Game {
         }
 
         this.currDirection = this.nextDirection;
-        int newRow = (int) this.snake.get(0).getY() / Constants.SQ_WIDTH;
-        int newCol = (int) this.snake.get(0).getX() / Constants.SQ_WIDTH;
+        int newRow = (int) this.snake.get(0).getY() / 35;
+        int newCol = (int) this.snake.get(0).getX() / 35;
 
         switch (this.currDirection) {
             case 0:
@@ -220,7 +244,7 @@ public class Game {
                 break;
         }
 
-        if (newCol >= Constants.NUM_COLS || newCol < 0 || newRow >= Constants.NUM_ROWS || newRow < 0
+        if (newCol >= 15 || newCol < 0 || newRow >= 15 || newRow < 0
                 || this.board[newRow][newCol].getFill().equals(Color.BLACK)) {
             this.gameOver = true;
             return;
@@ -228,8 +252,8 @@ public class Game {
 
         boolean ateFood = false;
         for (Circle myFood : this.food) {
-            if ((int) myFood.getCenterY() / Constants.SQ_WIDTH == newRow
-                    && (int) myFood.getCenterX() / Constants.SQ_WIDTH == newCol) {
+            if ((int) myFood.getCenterY() / 35 == newRow
+                    && (int) myFood.getCenterX() / 35 == newCol) {
                 if (myFood.getFill().equals(Color.GOLDENROD)) {
                     this.score += 50;
                 } else if (myFood.getFill().equals(Color.MINTCREAM)) {
@@ -239,7 +263,7 @@ public class Game {
                 } else if (myFood.getFill().equals(Color.RED)) {
                     this.score += 10;
                 }
-                this.scoreLabel.setText(Constants.SCORE_LABEL_TEXT + this.score);
+                this.scoreLabel.setText("Score: " + this.score);
 
                 this.food.remove(myFood);
                 this.gamePane.getChildren().remove(myFood);
@@ -251,8 +275,8 @@ public class Game {
 
         if (!ateFood) {
             Rectangle square = this.snake.remove(this.snake.size() - 1);
-            int squareRow = (int) square.getY() / Constants.SQ_WIDTH;
-            int squareCol = (int) square.getX() / Constants.SQ_WIDTH;
+            int squareRow = (int) square.getY() / 35;
+            int squareCol = (int) square.getX() / 35;
             if ((squareRow + squareCol) % 2 == 0) {
                 square.setFill(Color.GREENYELLOW);
             } else {

@@ -1,4 +1,4 @@
-package snake.StudentA;
+package snake.studentA;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -38,50 +38,26 @@ public class Game {
      */
     public Game(Pane gamePane, Label scoreLabel) {
         this.gamePane = gamePane;
+        this.gamePane.setFocusTraversable(true);
         this.board = new Board(this.gamePane);
         this.snake = new Snake(this.board);
         this.scoreLabel = scoreLabel;
         this.score = 0;
 
-        for (int i = 0; i < Constants.NUM_FRUIT; i++) {
-            this.spawnFood();
-        }
+        this.startGame();
+    }
 
+    /**
+     * Sets up the key handler and timeline in order to start the game.
+     */
+    private void startGame() {
         this.gamePane.setOnKeyPressed((KeyEvent event) -> this.handleKeyInput(event.getCode()));
-        this.gamePane.setFocusTraversable(true);
 
         KeyFrame kf = new KeyFrame(Duration.seconds(Constants.TIMELINE_DURATION),
                 (ActionEvent event) -> this.update());
         this.timeline = new Timeline(kf);
         this.timeline.setCycleCount(Animation.INDEFINITE);
         this.timeline.play();
-    }
-
-    /**
-     * Spawns a random new food item on a random tile that is empty.
-     */
-    private void spawnFood() {
-        BoardSquare tile = this.board.getRandomEmptyTile();
-        Food food;
-        switch ((int) (Math.random() * 10)) {
-            case 0:
-            case 1:
-                food = new Food(this.gamePane, Color.GOLDENROD, Constants.FOOD_3_SCORE, tile.getRow(), tile.getCol());
-                break;
-            case 2:
-                food = new Food(this.gamePane, Color.MINTCREAM, Constants.FOOD_4_SCORE, tile.getRow(), tile.getCol());
-                break;
-            case 3:
-            case 4:
-            case 5:
-                food = new Food(this.gamePane, Color.BLACK, Constants.FOOD_2_SCORE, tile.getRow(), tile.getCol());
-                break;
-            default:
-                food = new Food(this.gamePane, Color.RED, Constants.FOOD_1_SCORE, tile.getRow(), tile.getCol());
-                break;
-        }
-
-        tile.addFood(food);
     }
 
 
@@ -101,8 +77,10 @@ public class Game {
             labelBox.setPrefWidth(this.gamePane.getWidth());
             label.setStyle("-fx-font: italic bold 75px arial, serif;-fx-text-alignment: center;-fx-text-fill: white;");
 
-            Color[] colors = new Color[]{Color.web("#E00009"), Color.web("#E47C00"), Color.web("#ECEF02"), Color.web("#65F400"), Color.web("#51B5FF")};
-            DropShadow shadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#E02EF3"), 0, 10, 2, 2);
+            Color[] colors = new Color[]{Color.web("#E00009"), Color.web("#E47C00"), Color.web("#ECEF02"),
+                    Color.web("#65F400"), Color.web("#51B5FF")};
+            DropShadow shadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#E02EF3"),
+                    0, 10, 2, 2);
             for (Color color : colors) {
                 DropShadow temp = new DropShadow(BlurType.GAUSSIAN, color, 0, 10, 2, 2);
                 temp.setInput(shadow);
@@ -115,7 +93,7 @@ public class Game {
         if (result.getScoreIncrease() > 0) {
             this.score += result.getScoreIncrease();
             this.scoreLabel.setText(Constants.SCORE_LABEL_TEXT + this.score);
-            this.spawnFood();
+            this.board.spawnFood();
         }
     }
 

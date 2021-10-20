@@ -1,14 +1,21 @@
-package snake.StudentB;
+package snake.studentB;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+/**
+ * The graphical top-level class of the program: sets up the main BorderPane
+ * and its sub-Panes.
+ */
 public class PaneOrganizer {
 
     private BorderPane root;
 
+    /**
+     * Sets up the graphical user interface.
+     */
     public PaneOrganizer() {
         this.root = new BorderPane();
 
@@ -25,6 +32,10 @@ public class PaneOrganizer {
     }
 
 
+    /**
+     * Gets the root Pane of the application.
+     * @return root pane
+     */
     public BorderPane getRoot() {
         return this.root;
     }

@@ -1,0 +1,21 @@
+Snake README
+
+Overview:
+    My Snake app has a snake that moves across a grid of squares and changes
+    directions via the arrow keys (up/down/left/right). The goal is for the
+    snake to eat food, represented by circles, from the squares. When the
+    snake eats a food, the snake grows one square in length and another food
+    is spawned in a random location on the board. The game ends when the snake
+    moves into itself or moves off screen.
+
+Design Choices:
+    direction enum
+    tile contents enum
+    snake wrapper
+    picnictile wrapper
+
+Known Bugs: None
+
+Debugging Collaborators: lzimbali
+
+Hours Spent: 22 Hours

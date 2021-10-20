@@ -1,9 +1,16 @@
-package snake.StudentB;
+package snake.studentB;
 
+/**
+ * An enum to represent the direction in which something moves.
+ */
 public enum Direction {
 
     UP, DOWN, LEFT, RIGHT;
 
+    /**
+     * Gets the opposite direction of the current value.
+     * @return opposite direction
+     */
     public Direction opposite() {
         switch (this) {
             case UP:
@@ -17,6 +24,13 @@ public enum Direction {
         }
     }
 
+    /**
+     * Calculates the new row value when starting at old row and moving in this
+     * direction.
+     *
+     * @param oldRow the previous row value
+     * @return the new row value
+     */
     public int newRow(int oldRow) {
         switch (this) {
             case UP:
@@ -28,6 +42,13 @@ public enum Direction {
         }
     }
 
+    /**
+     * Calculates the new column value when starting at old column and moving in this
+     * direction.
+     *
+     * @param oldCol the previous column value
+     * @return the new column value
+     */
     public int newCol(int oldCol) {
         switch (this) {
             case LEFT:

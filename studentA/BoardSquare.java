@@ -1,11 +1,11 @@
-package snake.StudentA;
+package snake.studentA;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * Represents one square of the board and tracks its contents (food, snake, or empty).
+ * Wraps one square of the board and tracks its contents (food, snake, or empty).
  */
 public class BoardSquare {
 

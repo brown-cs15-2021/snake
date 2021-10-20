@@ -1,4 +1,4 @@
-package snake.StudentB;
+package snake.studentB;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -13,6 +13,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+/**
+ * The logical top-level class of the program that handles setting up the game,
+ * the animation timeline, key input, and handling game over.
+ */
 public class Game {
 
     private Snake snake;
@@ -21,6 +25,13 @@ public class Game {
     private ScoreController scoreController;
     private boolean gameOver;
 
+    /**
+     * Starts the snake game, by setting up the board of squares, adding initial food,
+     * and starting the timeline.
+     *
+     * @param gamePane the pane for the game components to show up on
+     * @param scoreController the controller that tracks game score
+     */
     public Game(Pane gamePane, ScoreController scoreController) {
         this.gamePane = gamePane;
         this.board = new PicnicTile[Constants.NUM_ROWS][Constants.NUM_COLS];
@@ -50,6 +61,9 @@ public class Game {
         timeline.play();
     }
 
+    /**
+     * Spawns one random type of food on a random empty tile.
+     */
     private void spawnFood() {
         int row;
         int col;
@@ -87,6 +101,11 @@ public class Game {
                 tile.getRow() * Constants.SQ_WIDTH, tile.getCol() * Constants.SQ_WIDTH));
     }
 
+    /**
+     * Changes the direction of the snake based on key input
+     *
+     * @param event the key press event
+     */
     private void handleKeyPress(KeyEvent event) {
         Direction newDirection = null;
         switch (event.getCode()) {
@@ -110,6 +129,11 @@ public class Game {
         }
     }
 
+    /**
+     * Updates the game at each tick of the timeline. If the game is over it sets a game
+     * over message. Otherwise, it moves the snake, then checks for game over and if the
+     * snake ate food.
+     */
     private void update() {
         if (this.gameOver) {
             Label label = new Label("Game Over!");
@@ -119,8 +143,10 @@ public class Game {
             labelBox.setPrefWidth(this.gamePane.getWidth());
             label.setStyle("-fx-font: italic bold 75px arial, serif;-fx-text-alignment: center;-fx-text-fill: white;");
 
-            Color[] colors = new Color[]{Color.web("#E00009"), Color.web("#E47C00"), Color.web("#ECEF02"), Color.web("#65F400"), Color.web("#51B5FF")};
-            DropShadow shadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#E02EF3"), 0, 10, 2, 2);
+            Color[] colors = new Color[]{Color.web("#E00009"), Color.web("#E47C00"),
+                    Color.web("#ECEF02"), Color.web("#65F400"), Color.web("#51B5FF")};
+            DropShadow shadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#E02EF3"),
+                    0, 10, 2, 2);
             for (Color color : colors) {
                 DropShadow temp = new DropShadow(BlurType.GAUSSIAN, color, 0, 10, 2, 2);
                 temp.setInput(shadow);

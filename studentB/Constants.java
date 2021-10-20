@@ -1,17 +1,13 @@
-package snake.StudentA;
-
-import javafx.scene.paint.Color;
+package snake.studentB;
 
 /**
- * Stores constants used throughout the program.
+ * Sets up constant values that are used in the app.
  */
 public class Constants {
 
     public static final int NUM_ROWS = 15;
     public static final int NUM_COLS = 15;
     public static final int SQ_WIDTH = 35;
-    public static final Color ODD_SQUARE_COLOR = Color.GREEN;
-    public static final Color EVEN_SQUARE_COLOR = Color.GREENYELLOW;
     public static final int SCORE_PANE_HEIGHT = 60;
     public static final int GAME_PANE_HEIGHT = SQ_WIDTH * NUM_ROWS;
     public static final int SCENE_HEIGHT = GAME_PANE_HEIGHT + SCORE_PANE_HEIGHT;
@@ -27,9 +23,4 @@ public class Constants {
     public static final int[][] SNAKE_INITIAL_COORDINATES = {{NUM_ROWS/2, 2}, {NUM_ROWS/2, 1}, {NUM_ROWS/2, 0}};
 
     public static final String SCORE_LABEL_TEXT = "Score: ";
-
-    public static final int FOOD_1_SCORE = 10;
-    public static final int FOOD_2_SCORE = 25;
-    public static final int FOOD_3_SCORE = 50;
-    public static final int FOOD_4_SCORE = 100;
 }
