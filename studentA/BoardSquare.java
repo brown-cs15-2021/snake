@@ -5,12 +5,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * Wraps one square of the board and tracks its contents (food, snake, or empty).
+ * Wraps one square of the board and tracks its contents (pellet, snake, or empty).
  */
 public class BoardSquare {
 
     private Rectangle rect;
-    private Food food;
+    private Pellet pellet;
     private Color originalColor;
     private int row;
     private int col;
@@ -28,7 +28,7 @@ public class BoardSquare {
         this.col = col;
         this.rect = new Rectangle(col * Constants.SQ_WIDTH, row * Constants.SQ_WIDTH,
                 Constants.SQ_WIDTH, Constants.SQ_WIDTH);
-        this.food = null;
+        this.pellet = null;
 
         if (odd) {
             this.originalColor = Constants.ODD_SQUARE_COLOR;
@@ -49,16 +49,16 @@ public class BoardSquare {
 
     /**
      * Sets content of the square to hold snake body. If the square held
-     * food previously, the food is eaten and the food's score is returned.
+     * pellet previously, the pellet is eaten and the pellet's score is returned.
      *
-     * @return score of food eaten from the square; if no food, 0 is returned
+     * @return score of pellet eaten from the square; if no pellet, 0 is returned
      */
     public int addSnake() {
         this.rect.setFill(Color.BLACK);
 
-        if (this.food != null) {
-            int score = this.food.eat();
-            this.food = null;
+        if (this.pellet != null) {
+            int score = this.pellet.eat();
+            this.pellet = null;
             return score;
 
         }
@@ -66,21 +66,21 @@ public class BoardSquare {
     }
 
     /**
-     * Sets content of the square to hold a food item.
+     * Sets content of the square to hold a pellet item.
      *
-     * @param food food item for the square to hold
+     * @param pellet pellet item for the square to hold
      */
-    public void addFood(Food food) {
-        this.food = food;
+    public void addPellet(Pellet pellet) {
+        this.pellet = pellet;
     }
 
     /**
-     * Indicates if square is empty or not (otherwise has snake or food).
+     * Indicates if square is empty or not (otherwise has snake or pellet).
      *
      * @return boolean to indicate square is empty (true) or not (false)
      */
     public boolean isEmpty() {
-        return this.rect.getFill().equals(this.originalColor) && this.food == null;
+        return this.rect.getFill().equals(this.originalColor) && this.pellet == null;
     }
 
     /**

@@ -53,26 +53,26 @@ public class Board {
      */
     public void spawnFood() {
         BoardSquare tile = this.getRandomEmptyTile();
-        Food food;
+        Pellet pellet;
         switch ((int) (Math.random() * 10)) {
             case 0:
             case 1:
-                food = new Food(this.gamePane, Color.GOLDENROD, Constants.FOOD_3_SCORE, tile.getRow(), tile.getCol());
+                pellet = new Pellet(this.gamePane, Color.GOLDENROD, Constants.FOOD_3_SCORE, tile.getRow(), tile.getCol());
                 break;
             case 2:
-                food = new Food(this.gamePane, Color.MINTCREAM, Constants.FOOD_4_SCORE, tile.getRow(), tile.getCol());
+                pellet = new Pellet(this.gamePane, Color.MINTCREAM, Constants.FOOD_4_SCORE, tile.getRow(), tile.getCol());
                 break;
             case 3:
             case 4:
             case 5:
-                food = new Food(this.gamePane, Color.BLACK, Constants.FOOD_2_SCORE, tile.getRow(), tile.getCol());
+                pellet = new Pellet(this.gamePane, Color.BLACK, Constants.FOOD_2_SCORE, tile.getRow(), tile.getCol());
                 break;
             default:
-                food = new Food(this.gamePane, Color.RED, Constants.FOOD_1_SCORE, tile.getRow(), tile.getCol());
+                pellet = new Pellet(this.gamePane, Color.RED, Constants.FOOD_1_SCORE, tile.getRow(), tile.getCol());
                 break;
         }
 
-        tile.addFood(food);
+        tile.addPellet(pellet);
     }
 
     /**

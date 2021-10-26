@@ -25,7 +25,8 @@ public class Snake {
 
     /**
      * Creates the snake.
-     * @param board the board for it to move across
+     *
+     * @param board    the board for it to move across
      * @param gamePane the pane for it to graphically appear
      */
     public Snake(PicnicTile[][] board, Pane gamePane) {
@@ -62,7 +63,32 @@ public class Snake {
      * @param dir the direction to move in
      */
     public void changeDirection(Direction dir) {
-        if (!dir.equals(this.directionMoving.opposite())) {
+        switch (dir) {
+            case LEFT:
+                if (this.directionMoving != Direction.RIGHT) {
+                    this.nextDirection = Direction.LEFT;
+                }
+                break;
+            case RIGHT:
+                if (this.directionMoving != Direction.LEFT) {
+                    this.nextDirection = Direction.RIGHT;
+                }
+                break;
+            case UP:
+                if (this.directionMoving != Direction.DOWN) {
+                    this.nextDirection = Direction.UP;
+                }
+                break;
+            case DOWN:
+                if (this.directionMoving != Direction.UP) {
+                    this.nextDirection = Direction.DOWN;
+                }
+                break;
+            default:
+                break;
+
+        }
+        if (!(dir == this.directionMoving.opposite())) {
             this.nextDirection = dir;
         }
     }
@@ -75,8 +101,27 @@ public class Snake {
      */
     public PicnicTile move() {
         this.directionMoving = this.nextDirection;
-        this.row = this.directionMoving.newRow(this.row);
-        this.col = this.directionMoving.newCol(this.col);
+        switch (this.directionMoving) {
+            case UP:
+                this.row--;
+                break;
+            case DOWN:
+                this.row++;
+                break;
+            case LEFT:
+                this.col--;
+                break;
+            case RIGHT:
+                this.col++;
+                break;
+            default:
+                break;
+        }
+
+        if (this.row >= this.board.length || this.row < 0 ||
+                this.col >= this.board[0].length || this.col < 0) {
+            return null;
+        }
 
         PicnicTile tile = this.board[this.row][this.col];
         if (tile == null) {
@@ -89,7 +134,7 @@ public class Snake {
                     this.snakeTiles.get(this.snakeTiles.size() - 1).reset();
                     PicnicTile backTile = this.snakeTiles.remove(this.snakeTiles.size() - 1);
                     backTile.reset();
-                    Rectangle rect = this.snakeBody.remove(this.snakeTiles.size() - 1);
+                    Rectangle rect = this.snakeBody.remove(this.snakeBody.size() - 1);
                     this.gamePane.getChildren().remove(rect);
                 default:
                     this.snakeTiles.add(0, tile);

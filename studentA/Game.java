@@ -68,7 +68,7 @@ public class Game {
     private void update() {
         SnakeMoveResult result = this.snake.move();
 
-        if (result.equals(SnakeMoveResult.GAME_OVER)) {
+        if (result == SnakeMoveResult.GAME_OVER) {
             this.timeline.stop();
             Label label = new Label("Game Over!");
             VBox labelBox = new VBox(label);

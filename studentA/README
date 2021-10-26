@@ -3,8 +3,8 @@ Snake README
 Overview:
     My Snake app has a snake that moves across a grid of squares and changes
     directions via the arrow keys (up/down/left/right). The goal is for the
-    snake to eat food, represented by circles, from the squares. When the
-    snake eats a food, the snake grows one square in length and another food
+    snake to eat a pellet, represented by circles, from the squares. When the
+    snake eats a pellet, the snake grows one square in length and another pellet
     is spawned in a random location on the board. The game ends when the snake
     moves into itself or moves off screen.
 
@@ -16,7 +16,7 @@ Design Choices:
 
     I delegated to a BoardSquare class as a wrapper for one square on the board
     and exposed just a few important methods that change the state of the square
-    (reset, addSnake, addFood) and access its state (isEmpty, getRow, getCol).
+    (reset, addSnake, addPellet) and access its state (isEmpty, getRow, getCol).
     With this design, no one can modify the square in any other way externally.
 
     Thus, I also have a Board class as a wrapper for a 2D array of BoardSquares.

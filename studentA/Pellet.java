@@ -7,7 +7,7 @@ import javafx.scene.shape.Circle;
 /**
  * Represents a food item on the board with an associated score.
  */
-public class Food {
+public class Pellet {
 
     private Circle circle;
     private int score;
@@ -22,7 +22,7 @@ public class Food {
      * @param row row index of tile on which to add food
      * @param col column index of tile on which to add food
      */
-    public Food(Pane gamePane, Color color, int score, int row, int col) {
+    public Pellet(Pane gamePane, Color color, int score, int row, int col) {
         this.gamePane = gamePane;
         this.circle = new Circle(col * Constants.SQ_WIDTH + Constants.FRUIT_OFFSET,
                 row * Constants.SQ_WIDTH + Constants.FRUIT_OFFSET,

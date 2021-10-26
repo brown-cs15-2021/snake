@@ -47,7 +47,7 @@ public class Snake {
      * @param dir desired direction to move the snake
      */
     public void changeDirection(Direction dir) {
-        if (!dir.equals(this.directionMoving.opposite())) {
+        if (!(dir == this.directionMoving.opposite())) {
             this.nextDirection = dir;
         }
     }

@@ -70,7 +70,7 @@ public class Game {
         do {
             row = (int) (Math.random() * Constants.NUM_ROWS);
             col = (int) (Math.random() * Constants.NUM_COLS);
-        } while (!this.board[row][col].getContents().equals(TileContents.EMPTY));
+        } while (!(this.board[row][col].getContents() == TileContents.EMPTY));
 
         PicnicTile tile = this.board[row][col];
         Color foodColor;
@@ -135,7 +135,9 @@ public class Game {
      * snake ate food.
      */
     private void update() {
-        if (this.gameOver) {
+        PicnicTile tile = this.snake.move();
+        if (tile == null) {
+            this.gameOver = true;
             Label label = new Label("Game Over!");
             VBox labelBox = new VBox(label);
             labelBox.setAlignment(Pos.CENTER);
@@ -157,13 +159,7 @@ public class Game {
             return;
         }
 
-        PicnicTile tile = this.snake.move();
-        if (tile == null) {
-            this.gameOver = true;
-            return;
-        }
-
-        if (tile.getContents().equals(TileContents.FOOD)) {
+        if (tile.getContents() == TileContents.FOOD) {
             this.scoreController.addToScore(tile.eatFood());
             this.spawnFood();
         }
